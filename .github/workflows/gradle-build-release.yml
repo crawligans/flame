@@ -27,4 +27,4 @@ jobs:
           arguments: build -Pflame=Worker
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/libs/*.jar"
+          artifacts: "app/build/libs/*.jar,app/build/distributions/**"
