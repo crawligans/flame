@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.naming.OperationNotSupportedException;
@@ -41,7 +42,7 @@ class Worker extends cis5550.generic.Worker {
 
     int port = Integer.parseInt(args[0]);
     String server = args[1];
-    startPingThread(server, "" + port, port);
+    startPingThread(server, UUID.randomUUID().toString(), port);
     final File myJAR = new File("__worker" + port + "-current.jar");
 
     port(port);
