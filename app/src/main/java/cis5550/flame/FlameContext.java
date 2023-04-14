@@ -5,7 +5,7 @@ import java.io.*;
 import cis5550.kvs.Row;
 import cis5550.kvs.KVSClient;
 
-public interface FlameContext {
+public interface FlameContext extends Serializable {
   public KVSClient getKVS();
 
   public interface RowToString extends Serializable {

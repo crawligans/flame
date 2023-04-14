@@ -6,6 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public interface FlameRDD {
+
+  String drop() throws Exception;
+
+  String drop(boolean saved) throws Exception;
+
   public interface StringToIterable extends Serializable {
   	Iterable<String> op(String a) throws Exception;
   };

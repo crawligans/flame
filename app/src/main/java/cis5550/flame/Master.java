@@ -50,7 +50,7 @@ class Master extends cis5550.generic.Master {
     get("/", (request, response) -> {
       response.type("text/html");
       return "<html><head><title>Flame Master</title></head><body><h3>Flame Master</h3>\n"
-          + clientTable() + "</body></html>";
+          + workerTable() + "</body></html>";
     });
 
     /* Set up the main route for job submissions. This is invoked from FlameSubmit. */

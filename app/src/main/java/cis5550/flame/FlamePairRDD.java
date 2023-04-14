@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.io.Serializable;
 
 public interface FlamePairRDD {
+
+  String drop(boolean saved) throws Exception;
+
   public interface TwoStringsToString extends Serializable {
   	public String op(String a, String b);
   };
@@ -70,4 +73,7 @@ public interface FlamePairRDD {
   // extra credit in HW7; if you do not implement it, please return 'null'.
 
   public FlamePairRDD cogroup(FlamePairRDD other) throws Exception;
+
+
+  public String drop() throws Exception;
 }

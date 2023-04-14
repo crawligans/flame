@@ -9,6 +9,7 @@ import cis5550.tools.Partitioner;
 import cis5550.tools.Partitioner.Partition;
 import cis5550.tools.Serializer;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import javax.naming.OperationNotSupportedException;
 
-public abstract class FlameContextImpl implements FlameContext {
+public abstract class FlameContextImpl implements FlameContext, Serializable {
 
   private static final Logger logger = Logger.getLogger(FlameContextImpl.class);
   private final Partitioner partitioner;

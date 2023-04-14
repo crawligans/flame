@@ -15,6 +15,7 @@ public class FlamePairRDDImpl implements FlamePairRDD {
 
   private final FlameContextImpl context;
   private String table;
+  private boolean saved = false;
 
   public FlamePairRDDImpl(FlameContextImpl context, String table) {
     this.context = context;
@@ -72,5 +73,20 @@ public class FlamePairRDDImpl implements FlamePairRDD {
   public void saveAsTable(String tableNameArg) throws Exception {
     context.getKVS().rename(table, tableNameArg);
     this.table = tableNameArg;
+    this.saved = true;
+  }
+
+  @Override
+  public String drop() throws Exception {
+    return drop(false);
+  }
+
+  @Override
+  public String drop(boolean saved) throws Exception {
+    if (this.saved && !saved) {
+      throw new IllegalStateException("Use the 'saved' argument to confirm delete");
+    }
+    context.getKVS().drop(table);
+    return null;
   }
 }
