@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -22,8 +23,8 @@ import javax.naming.OperationNotSupportedException;
 public abstract class FlameContextImpl implements FlameContext, Serializable {
 
   private static final Logger logger = Logger.getLogger(FlameContextImpl.class);
-  private final Partitioner partitioner;
-  private Collection<Partition> partitions;
+  transient private final Partitioner partitioner;
+  private List<Partition> partitions;
 
   public FlameContextImpl(Partitioner partitioner, String jarName) {
     this.partitioner = partitioner;
@@ -130,7 +131,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
                 "kvsMaster=" + URLEncoder.encode(getKVS().getMaster(),
                     StandardCharsets.UTF_8))).toString(), Serializer.objectToByteArray(args));
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        return new Response(e.toString().getBytes(StandardCharsets.UTF_8), new HashMap<>(), 500);
       }
     }).peek(res -> {
       if (res.statusCode() < 400) {
@@ -139,9 +140,6 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
         logger.error(new String(res.body()));
       }
     }).toList();
-    if (responses.stream().anyMatch(res -> res.statusCode() >= 400)) {
-      throw new IOException(responses.toString());
-    }
     return switch (operation) {
       case FOLD -> responses.stream().map(res -> new String(res.body(), StandardCharsets.UTF_8))
           .reduce((String) args[0], ((TwoStringsToString) args[1])::op);

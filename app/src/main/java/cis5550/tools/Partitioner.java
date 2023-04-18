@@ -1,10 +1,11 @@
 package cis5550.tools;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Partitioner {
+public class Partitioner implements Serializable {
 
-  public class Partition {
+  public class Partition implements Serializable {
     public String kvsWorker;
     public String fromKey;
     public String toKeyExclusive;

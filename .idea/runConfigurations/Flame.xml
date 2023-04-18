@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Flame" type="CompoundRunConfigurationType">
+    <toRun name="flame.Master" type="Application" />
+    <toRun name="flame.Worker" type="Application" />
+    <method v="2" />
+  </configuration>
+</component>
