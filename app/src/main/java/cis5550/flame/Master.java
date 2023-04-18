@@ -80,7 +80,7 @@ class Master extends cis5550.generic.Master {
       Thread[] threads = new Thread[getWorkers().size()];
       String[] results = new String[getWorkers().size()];
       for (int i = 0; i < getWorkers().size(); i++) {
-        final String url = "http://" + getWorkers().elementAt(i) + "/useJAR";
+        final String url = "http://" + getWorkers().get(i) + "/useJAR";
         final int j = i;
         threads[i] = new Thread("JAR upload #" + (i + 1)) {
           public void run() {

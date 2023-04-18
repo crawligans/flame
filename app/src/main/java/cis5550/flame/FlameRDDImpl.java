@@ -125,7 +125,7 @@ public class FlameRDDImpl implements FlameRDD {
     if (this.saved && !saved) {
       throw new IllegalStateException("Use the 'saved' argument to confirm delete");
     }
-    context.getKVS().drop(table);
+    context.getKVS().delete(table);
     return null;
   }
 }
