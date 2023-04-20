@@ -34,14 +34,9 @@ def urlFile = { url, name ->
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation urlFile('https://github.com/crawligans/webserver/releases/latest/download/webserver.jar', 'webserver')
+    implementation fileTree('../lib')
+//    implementation urlFile('https://github.com/crawligans/webserver/releases/latest/download/webserver.jar', 'webserver')
     implementation urlFile('https://github.com/crawligans/kvs/releases/latest/download/KVSMaster.jar', 'kvs')
-//    implementation fileTree('../lib')
 }
 
 distributions {
