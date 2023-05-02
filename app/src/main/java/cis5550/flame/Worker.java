@@ -16,6 +16,7 @@ import cis5550.flame.FlameRDD.StringToPairIterable;
 import cis5550.flame.FlameRDD.StringToString;
 import cis5550.kvs.KVSClient;
 import cis5550.kvs.Row;
+import cis5550.tools.Logger;
 import cis5550.tools.Serializer;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,9 +43,9 @@ class Worker extends cis5550.generic.Worker {
 
     int port = Integer.parseInt(args[0]);
     String server = args[1];
-    startPingThread(new String[]{String.valueOf(port), UUID.randomUUID().toString(), server});
+    startPingThread(new String[]{String.valueOf(port), generateRandomString(5), server});
     final File myJAR = new File("__worker" + port + "-current.jar");
-
+    Logger logger = Logger.getLogger(Worker.class);
     port(port);
 
     post("/useJAR", (request, response) -> {
@@ -86,7 +87,8 @@ class Worker extends cis5550.generic.Worker {
                   try {
                     return ((StringToIterable) lambda).op(a);
                   } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error(e.getMessage(), e);
+                    return null;
                   }
                 }).filter(Objects::nonNull)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), true)));
@@ -98,7 +100,8 @@ class Worker extends cis5550.generic.Worker {
                   try {
                     return ((PairToStringIterable) lambda).op(a);
                   } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error(e.getMessage(), e);
+                    return null;
                   }
                 }).filter(Objects::nonNull)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), true)));
@@ -139,7 +142,8 @@ class Worker extends cis5550.generic.Worker {
                   try {
                     return ((StringToPairIterable) lambda).op(a);
                   } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error(e.getMessage(), e);
+                    return null;
                   }
                 }).filter(Objects::nonNull)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), true)));
@@ -151,7 +155,8 @@ class Worker extends cis5550.generic.Worker {
                   try {
                     return ((PairToPairIterable) lambda).op(a);
                   } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error(e.getMessage(), e);
+                    return null;
                   }
                 }).filter(Objects::nonNull)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), true)));
@@ -188,7 +193,8 @@ class Worker extends cis5550.generic.Worker {
             try {
               return lambda.op(a);
             } catch (Exception e) {
-              throw new RuntimeException(e);
+              logger.error(e.getMessage(), e);
+              return null;
             }
           }));
       return output.toString();
@@ -225,7 +231,7 @@ class Worker extends cis5550.generic.Worker {
           try {
             throw new OperationNotSupportedException();
           } catch (OperationNotSupportedException e) {
-            throw new RuntimeException(e);
+            Logger.getLogger(FlameContextImpl.class).error(e.getMessage(), e);
           }
         }
       };
@@ -358,7 +364,7 @@ class Worker extends cis5550.generic.Worker {
         try {
           context.getKVS().put(req.queryParams("outputTable"), v, "value", v);
         } catch (IOException e) {
-          throw new RuntimeException(e);
+          logger.error(e.getMessage(), e);
         }
       });
       return output.toString();
@@ -394,7 +400,8 @@ class Worker extends cis5550.generic.Worker {
                 try {
                   return predicate.op(a);
                 } catch (Exception e) {
-                  throw new RuntimeException(e);
+                  logger.error(e.getMessage(), e);
+                  return false;
                 }
               }));
       return output.toString();
@@ -430,7 +437,8 @@ class Worker extends cis5550.generic.Worker {
                 try {
                   return lambda.op(s);
                 } catch (Exception e) {
-                  throw new RuntimeException(e);
+                  logger.error(e.getMessage(), e);
+                  return "";
                 }
               })).entrySet().stream()
               .map(kv -> new FlamePair(kv.getKey(), String.join(",", kv.getValue()))));
@@ -500,9 +508,10 @@ class Worker extends cis5550.generic.Worker {
                   flameRDD.stream(req.queryParams("fromKey"), req.queryParams("toKeyExclusive"))
                       .iterator());
             } catch (Exception e) {
-              throw new RuntimeException(e);
+              logger.error(e.getMessage(), e);
+              return null;
             }
-          }).spliterator(), true));
+          }).spliterator(), true).filter(Objects::nonNull));
       return output.toString();
     });
 
