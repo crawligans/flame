@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="flame.Worker1" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="cis5550.flame.Worker" />
+    <module name="flame.app.main" />
+    <option name="PROGRAM_PARAMETERS" value="9001 localhost:9000" />
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
