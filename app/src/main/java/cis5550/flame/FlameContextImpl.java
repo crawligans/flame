@@ -118,7 +118,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
     if (partitions == null) {
       partitions = partitioner.assignPartitions();
     }
-    List<Response> responses = partitions.parallelStream().map(part -> {
+    Stream<Response> responses = partitions.parallelStream().map(part -> {
       try {
         return HTTP.doRequest("POST", new URL(
             "http://" + part.assignedFlameWorker + operation.route + "?" + String.join("&",
@@ -139,10 +139,12 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
       } else {
         logger.error(new String(res.body()));
       }
-    }).toList();
+    });
     return switch (operation) {
-      case FOLD -> responses.stream().map(res -> new String(res.body(), StandardCharsets.UTF_8))
-          .reduce((String) args[0], ((TwoStringsToString) args[1])::op);
+      case FOLD ->
+          responses.filter(res -> 200 <= res.statusCode() && res.statusCode() < 300)
+              .map(res -> new String(res.body(), StandardCharsets.UTF_8))
+              .reduce((String) args[0], ((TwoStringsToString) args[1])::op);
       default -> outputTable;
     };
   }
