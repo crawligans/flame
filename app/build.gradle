@@ -47,5 +47,5 @@ distributions {
 
 application {
     mainClass = 'cis5550.flame.' + project.findProperty("flame").toString()
-    archivesBaseName 'Flame' + project.findProperty("flame").toString()
+    archivesBaseName = 'Flame' + project.findProperty("flame").toString()
 }

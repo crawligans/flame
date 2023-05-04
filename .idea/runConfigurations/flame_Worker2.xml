@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="flame.Worker1" type="Application" factoryName="Application">
+  <configuration default="false" name="flame.Worker" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="cis5550.flame.Worker" />
     <module name="flame.app.main" />
     <option name="PROGRAM_PARAMETERS" value="9001 localhost:9000" />
