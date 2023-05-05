@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="search_jar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../search/out/artifacts/search_jar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../search/app/src/main/java" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../search/out/artifacts/search_jar" recursive="false" />
+  </library>
+</component>

@@ -15,7 +15,7 @@ public class FlamePairRDDImpl implements FlamePairRDD {
 
   private final FlameContextImpl context;
   protected String table;
-  private boolean saved = false;
+  protected boolean saved = false;
 
   public FlamePairRDDImpl(FlameContextImpl context, String table) {
     this.context = context;
@@ -59,7 +59,14 @@ public class FlamePairRDDImpl implements FlamePairRDD {
   @Override
   public FlamePairRDD join(FlamePairRDD other) throws Exception {
     String otherTable = UUID.randomUUID().toString();
+    boolean otherSaved = false;
+    if (other instanceof FlamePairRDDImpl) {
+      otherSaved = ((FlamePairRDDImpl) other).saved;
+    }
     other.saveAsTable(otherTable);
+    if (other instanceof FlamePairRDDImpl) {
+      ((FlamePairRDDImpl) other).saved = otherSaved;
+    }
     return new FlamePairRDDImpl(context,
         context.invokeOperation(Operation.JOIN, table, otherTable));
   }
