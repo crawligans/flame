@@ -4,6 +4,7 @@ import cis5550.flame.FlamePairRDD.TwoStringsToString;
 import cis5550.kvs.KVSClient;
 import cis5550.tools.HTTP;
 import cis5550.tools.HTTP.Response;
+import cis5550.tools.Hasher;
 import cis5550.tools.Logger;
 import cis5550.tools.Partitioner;
 import cis5550.tools.Partitioner.Partition;
@@ -33,7 +34,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
   public static void parallelize(KVSClient client, String table, Stream<String> list) {
     list.forEach(v -> {
       try {
-        client.put(table, UUID.randomUUID().toString(), "value", v);
+        client.put(table, Hasher.hash(v), "value", v);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -53,7 +54,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
   public static void parallelize(KVSClient client, String table, List<String> list)
       throws Exception {
     for (String v : list) {
-      client.put(table, UUID.randomUUID().toString(), "value", v);
+      client.put(table, Hasher.hash(v), "value", v);
     }
   }
 
