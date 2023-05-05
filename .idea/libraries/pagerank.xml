@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="pagerank">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../pagerank" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../pagerank/lib/src/main/java" />
+    </SOURCES>
+  </library>
+</component>

@@ -14,7 +14,7 @@ import javax.naming.OperationNotSupportedException;
 public class FlamePairRDDImpl implements FlamePairRDD {
 
   private final FlameContextImpl context;
-  private String table;
+  protected String table;
   private boolean saved = false;
 
   public FlamePairRDDImpl(FlameContextImpl context, String table) {

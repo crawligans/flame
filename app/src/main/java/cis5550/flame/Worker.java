@@ -21,6 +21,7 @@ import cis5550.tools.Serializer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.naming.OperationNotSupportedException;
@@ -545,8 +545,10 @@ class Worker extends cis5550.generic.Worker {
       Map<String, List<FlamePair>> otherPairs = other.stream(fromKey, toKeyExclusive)
           .collect(Collectors.groupingByConcurrent(FlamePair::_1));
       context.parallelizePairs(req.queryParams("outputTable"),
-          flameRDD.stream(fromKey, toKeyExclusive).flatMap(p1 -> otherPairs.get(p1._1()).stream()
-              .map(p2 -> new FlamePair(p1._1(), p1._2() + "," + p2._2()))));
+          flameRDD.stream(fromKey, toKeyExclusive)
+              .flatMap(p1 -> Objects.requireNonNullElse(otherPairs.get(p1._1()),
+                      new ArrayList<FlamePair>()).stream()
+                  .map(p2 -> new FlamePair(p1._1(), p1._2() + "," + p2._2()))));
       return output.toString();
     });
 
