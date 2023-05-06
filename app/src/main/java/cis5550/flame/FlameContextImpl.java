@@ -36,7 +36,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
       try {
         client.put(table, Hasher.hash(v), "value", v);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        logger.error(e.getMessage(), e);
       }
     });
   }
@@ -46,7 +46,7 @@ public abstract class FlameContextImpl implements FlameContext, Serializable {
       try {
         client.put(table, pair._1(), UUID.randomUUID().toString(), pair._2());
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        logger.error(e.getMessage(), e);
       }
     });
   }
